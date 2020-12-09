@@ -8,10 +8,9 @@ StartLimitInterval=0
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/bin/nginx-prometheus-exporter \
+ExecStart={{ nginx_exporter_install_dir }}/nginx-prometheus-exporter \
           -nginx.scrape-uri {{ nginx_exporter_scrape_uri }} \
           -web.listen-address {{ nginx_exporter_listen_address }}
-
 ExecReload=/bin/kill -HUP $MAINPID
 SyslogIdentifier=nginx-exporter
 RestartSec=1

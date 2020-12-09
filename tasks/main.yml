@@ -1,32 +1,40 @@
 ---
+- name: "End play if distribution not suported"
+  meta: end_host
+  when:
+    - ansible_distribution != "Debian"
+    - ansible_distribution != "Ubuntu"
+    - ansible_distribution != "CentOS"
+
 - name: "Check if nginx-exporter binary exist"
   stat:
-    path: "/usr/local/bin/nginx-prometheus-exporter"
+    path: '{{ nginx_exporter_install_dir }}/nginx-prometheus-exporter'
   register: nginx_exporter_binary
 
-- when: not nginx_exporter_binary.stat.exists or nginx_exporter_upgrade
+- when: not nginx_exporter_binary.stat.exists or nginx_exporter_force_install|bool
   block:
     - name: "Download nginx-exporter..."
       get_url:
-        url: '{{ nginx_exporter_url }}'
-        dest: /tmp/
-        timeout: 60
+        url: '{{ nginx_exporter_tgz_url }}'
+        dest: '{{ nginx_exporter_temp_dir }}'
+        timeout: '60'
+        mode: '0644'
 
     - name: "Extract archive"
       unarchive:
-        src: "/tmp/{{ nginx_exporter_tgz }}"
-        dest: "/usr/local/bin/"
-        mode: 0755
+        src: '{{ nginx_exporter_temp_dir }}/{{ nginx_exporter_tgz }}'
+        dest: '{{ nginx_exporter_install_dir }}'
         remote_src: true
+        mode: '0755'
 
 - name: "Create systemd for nginx_exporter"
   template:
-    src: nginx_exporter.service.j2
-    dest: /etc/systemd/system/nginx_exporter.service
-    mode: 0644
+    src: 'nginx_exporter.service.j2'
+    dest: '/etc/systemd/system/nginx_exporter.service'
+    mode: '0644'
   notify: "restart nginx_exporter"
 
-- name: "Start nginx_exporter.service"
+- name: "Enable and Start nginx_exporter.service"
   systemd:
     name: nginx_exporter
     state: started
