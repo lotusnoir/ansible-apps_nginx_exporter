@@ -1,12 +1,12 @@
 ---
 # Binary install
-nginx_exporter_version:         "0.8.0"
-nginx_exporter_tgz:             "nginx-prometheus-exporter-{{ nginx_exporter_version}}-linux-amd64.tar.gz"
-nginx_exporter_tgz_url:         "https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v{{ nginx_exporter_version }}/{{ nginx_exporter_tgz }}"
-nginx_exporter_temp_dir:        "/tmp"
-nginx_exporter_install_dir:     "/usr/local/bin"
-nginx_exporter_force_install:   false
+nginx_exporter_version: "0.8.0"
+nginx_exporter_tgz: "nginx-prometheus-exporter-{{ nginx_exporter_version}}-linux-amd64.tar.gz"
+nginx_exporter_tgz_url: "https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v{{ nginx_exporter_version }}/{{ nginx_exporter_tgz }}"
+nginx_exporter_temp_dir: "/tmp"
+nginx_exporter_install_dir: "/usr/local/bin"
+nginx_exporter_force_install: false
 
 # Systemd optiona
-nginx_exporter_scrape_uri:      http://127.0.0.1:8080/stub_status
-nginx_exporter_listen_address:  0.0.0.0:9108
+nginx_exporter_scrape_uri: http://127.0.0.1:8080/stub_status
+nginx_exporter_listen_address: 0.0.0.0:9108
