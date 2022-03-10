@@ -1,21 +1,26 @@
 ---
 galaxy_info:
-  author: "Philippe leal"
-  description: "Install and configure nginx exporter metrics for prometheus"
+  author: lotusnoir
   role_name: apps_nginx_exporter
-  license: "license: Apache License, Version 2.0"
+  description: "Deploy [nginx_exporter](https://github.com/boynux/nginx-exporter) to expose nginx metrics to prometheus."
+  license: "Apache License, Version 2.0"
   min_ansible_version: 2.8
 
   platforms:
     - name: "Ubuntu"
       versions:
-        - "xenial"
+        - "focal"
         - "bionic"
     - name: "Debian"
       versions:
         - "bullseye"
         - "buster"
-        - "stretch"
+    - name: "RedHat"
+      versions:
+        - "Maipo"
+    - name: "Rocky"
+      versions:
+        - "8"
 
   galaxy_tags:
     - nginx
