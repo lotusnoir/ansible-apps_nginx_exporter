@@ -1,34 +1,35 @@
 ---
 - name: "Check if nginx-exporter binary exist"
-  stat:
+  ansible.builtin.stat:
     path: '{{ nginx_exporter_install_dir }}/nginx-prometheus-exporter'
   register: nginx_exporter_binary
 
-- when: not nginx_exporter_binary.stat.exists or nginx_exporter_force_install|bool
+- name: "Install tasks"
+  when: not nginx_exporter_binary.stat.exists or nginx_exporter_force_install|bool
   block:
     - name: "Download nginx-exporter..."
-      get_url:
+      ansible.builtin.get_url:
         url: '{{ nginx_exporter_tgz_url }}'
         dest: '{{ nginx_exporter_temp_dir }}'
         timeout: '60'
         mode: '0644'
 
     - name: "Extract archive"
-      unarchive:
+      ansible.builtin.unarchive:
         src: '{{ nginx_exporter_temp_dir }}/{{ nginx_exporter_tgz }}'
         dest: '{{ nginx_exporter_install_dir }}'
         remote_src: true
         mode: '0755'
 
 - name: "Create systemd for nginx_exporter"
-  template:
+  ansible.builtin.template:
     src: 'nginx_exporter.service.j2'
     dest: '/etc/systemd/system/nginx_exporter.service'
     mode: '0644'
   notify: "restart nginx_exporter"
 
 - name: "Enable and Start nginx_exporter.service"
-  systemd:
+  ansible.builtin.systemd:
     name: nginx_exporter
     state: started
     enabled: true
