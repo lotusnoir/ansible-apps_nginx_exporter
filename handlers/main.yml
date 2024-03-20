@@ -1,5 +1,5 @@
 ---
-- name: "restart nginx_exporter"
+- name: "Restart nginx_exporter"
   ansible.builtin.service:
     name: "nginx_exporter"
     state: "restarted"
